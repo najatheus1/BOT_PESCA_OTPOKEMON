@@ -83,6 +83,18 @@ void ATTACK(void) {
 	keybd_event(VK_F11, NULL, NULL, NULL);
 	keybd_event(VK_F12, NULL, NULL, NULL);
 	Sleep(150);
+	keybd_event(VK_F1, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F2, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F3, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F4, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F5, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F6, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F7, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F8, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F9, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F10, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F11, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F12, NULL, KEYEVENTF_KEYUP, NULL);
 }
 
 
@@ -94,7 +106,15 @@ void callBack(void) {
 	dc = 0;
 	color = 0;
 
-	for (std::size_t i = 0;; ++i) {
+	window[0] = FindWindow("otPokemon", NULL);
+	if (!window[0]) {
+		std::cout << "O OTPOKEMON ESTÁ FECHADO!" << std::endl;
+		return;
+	}
+
+	dc = GetDC(window[0]);
+
+	for (;;) {
 		bot_pesca();
 	}
 }
@@ -105,9 +125,11 @@ void bot_pesca(void) {
 		window[1] = GetForegroundWindow();
 		if (window[1]) {
 			if (window[0] == window[1]) {
-				GetCursorPos(&cursor);
-				dc = GetDC(window[1]);
+				if (!dc) {
+					dc = GetDC(window[0]);
+				}
 
+				GetCursorPos(&cursor);
 				if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(0x4f)) {
 					std::cout << "COLOQUE O MOUSE OU O MARCADOR EM CIMA DO PEIXE DA PESCA" << std::endl;
 					pos_cursor[0] = cursor.x;
@@ -131,22 +153,21 @@ void bot_pesca(void) {
 				color_rgb[1] = static_cast<int>GetGValue(color);
 				color_rgb[2] = static_cast<int>GetBValue(color);
 				color_rgb[3] = RGB(color_rgb[0], color_rgb[1], color_rgb[2]);
-				std::cout << color_rgb[3] << std::endl;
-				if (color_rgb[3] >= 41700 && color_rgb[3] <= 63000) {
+				if (color_rgb[3] >= 917341 && color_rgb[3] <= 3254083) {
 					SetCursorPos(pos_cursor[0], pos_cursor[1]);
 					mouse_event(0x0002, NULL, NULL, NULL, NULL);
 					mouse_event(0x0004, NULL, NULL, NULL, NULL);
-					Sleep(2000);
-
+					Sleep(200);
 					mouse_event(0x0002, NULL, NULL, NULL, NULL);
 					mouse_event(0x0004, NULL, NULL, NULL, NULL);
-
+					Sleep(200);
 					SetCursorPos(pos_cursor[2], pos_cursor[3]);
 					mouse_event(0x0002, NULL, NULL, NULL, NULL);
 					mouse_event(0x0004, NULL, NULL, NULL, NULL);
 					ATTACK();
 					std::cout << "PEGOU UM POKEMON!!" << std::endl;
 				}
+				return;
 			}
 		}
 	}
