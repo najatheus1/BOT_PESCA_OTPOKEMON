@@ -10,6 +10,7 @@ POINT cursor;
 COLORREF color;
 
 void marcador(int pox_x, int pos_y);
+void TARGET(void);
 void ATTACK(void);
 void d_ATTACK(void);
 void callBack(void);
