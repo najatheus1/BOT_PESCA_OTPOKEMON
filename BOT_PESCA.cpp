@@ -22,6 +22,33 @@ int main()
 		pos_cursor[i] = 0;
 	}
 
+	while (pos_cursor[0] == 0 && pos_cursor[1] == 0) {
+		GetCursorPos(&cursor);
+		pos_x_y[0] = cursor.x;
+		pos_x_y[1] = cursor.y;
+		marcador();
+
+		std::cout << "COLOQUE O MOUSE OU O MARCADOR EM CIMA DO PEIXE DA PESCA E APERTE CTRL+SHIFT+O" << std::endl;
+		if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(0x4f)) {
+			pos_cursor[0] = cursor.x;
+			pos_cursor[1] = cursor.y;
+		}
+	}
+
+	while (pos_cursor[2] == 0 && pos_cursor[3] == 0) {
+		GetCursorPos(&cursor);
+		std::cout << "COLOQUE O MOUSE EM CIMA DA AGUA E APERTE CTRL+SHIFT+A" << std::endl;
+		if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(0x41)) {
+			pos_cursor[2] = cursor.x;
+			pos_cursor[3] = cursor.y;
+		}
+		pos_x_y[0] = cursor.x;
+		pos_x_y[1] = cursor.y;
+		marcador();
+
+		std::system("cls");
+	}
+
 	callBack();
 	return 0;
 }
@@ -80,33 +107,6 @@ void bot_pesca(void) {
 			if (window[0] == window[1]) {
 				GetCursorPos(&cursor);
 				dc = GetDC(window[1]);
-				if (a >= 1) {
-					std::cout << "teste2" << std::endl;
-				}
-				while (pos_cursor[0] == 0 && pos_cursor[1] == 0) {
-					GetCursorPos(&cursor);
-					pos_x_y[0] = cursor.x;
-					pos_x_y[1] = cursor.y;
-					marcador();
-
-					std::cout << "COLOQUE O MOUSE OU O MARCADOR EM CIMA DO PEIXE DA PESCA E APERTE CTRL+SHIFT+O" << std::endl;
-					if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(0x4f)) {
-						pos_cursor[0] = cursor.x;
-						pos_cursor[1] = cursor.y;
-					}
-				}
-
-				while (pos_cursor[2] == 0 && pos_cursor[3] == 0) {
-					GetCursorPos(&cursor);
-					std::cout << "COLOQUE O MOUSE EM CIMA DA AGUA E APERTE CTRL+SHIFT+A" << std::endl;
-					if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(0x41)) {
-						pos_cursor[2] = cursor.x;
-						pos_cursor[3] = cursor.y;
-					}
-					marcador();
-
-					std::system("cls");
-				}
 
 				if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(0x4f)) {
 					std::cout << "COLOQUE O MOUSE OU O MARCADOR EM CIMA DO PEIXE DA PESCA" << std::endl;
