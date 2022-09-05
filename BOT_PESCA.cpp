@@ -10,6 +10,7 @@ POINT cursor;
 COLORREF color;
 
 void marcador(int pox_x, int pos_y);
+void pesca(void);
 void TARGET(void);
 void ATTACK(void);
 void d_ATTACK(void);
@@ -61,6 +62,26 @@ int main()
 
 	callBack();
 	return 0;
+}
+
+void pesca(void) {
+	Sleep(200);
+	SetCursorPos(pos_cursor[0], pos_cursor[1]);
+	mouse_event(0x0002, NULL, NULL, NULL, NULL);
+	mouse_event(0x0004, NULL, NULL, NULL, NULL);
+	Sleep(200);
+	mouse_event(0x0002, NULL, NULL, NULL, NULL);
+	mouse_event(0x0004, NULL, NULL, NULL, NULL);
+	Sleep(200);
+	SetCursorPos(pos_cursor[2], pos_cursor[3]);
+	mouse_event(0x0002, NULL, NULL, NULL, NULL);
+	mouse_event(0x0004, NULL, NULL, NULL, NULL);
+	mouse_event(0x0002, NULL, NULL, NULL, NULL);
+	mouse_event(0x0004, NULL, NULL, NULL, NULL);
+	Sleep(200);
+	mouse_event(0x0002, NULL, NULL, NULL, NULL);
+	mouse_event(0x0004, NULL, NULL, NULL, NULL);
+	Sleep(200);
 }
 
 void marcador(int pox_x, int pos_y) {
@@ -120,7 +141,7 @@ void ATTACK(void) {
 	keybd_event(VK_F10, NULL, NULL, NULL);
 	keybd_event(VK_F11, NULL, NULL, NULL);
 	keybd_event(VK_F12, NULL, NULL, NULL);
-	Sleep(150);
+	pesca();
 	//d_ATTACK();
 }
 
@@ -177,19 +198,8 @@ void bot_pesca(void) {
 				color_rgb[2] = static_cast<int>GetBValue(color);
 				color_rgb[3] = RGB(color_rgb[0], color_rgb[1], color_rgb[2]);
 				if (color_rgb[3] >= 917341 && color_rgb[3] <= 3254083) {
-					SetCursorPos(pos_cursor[0], pos_cursor[1]);
-					mouse_event(0x0002, NULL, NULL, NULL, NULL);
-					mouse_event(0x0004, NULL, NULL, NULL, NULL);
-					Sleep(400);
-					mouse_event(0x0002, NULL, NULL, NULL, NULL);
-					mouse_event(0x0004, NULL, NULL, NULL, NULL);
-					Sleep(400);
-					SetCursorPos(pos_cursor[2], pos_cursor[3]);
-					mouse_event(0x0002, NULL, NULL, NULL, NULL);
-					mouse_event(0x0004, NULL, NULL, NULL, NULL);
-					Sleep(400);
+					pesca();
 					ATTACK();
-					SetCursorPos(pos_cursor[2], pos_cursor[3]);
 					std::cout << "PEGOU UM POKEMON!!" << std::endl;
 				}
 				return;
