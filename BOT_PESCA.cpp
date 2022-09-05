@@ -5,13 +5,13 @@
 std::array<HWND, 2> window{};
 std::array<int, 4> color_rgb{};
 std::array<LONG, 4> pos_cursor{};
-std::array<int, 2> pos_x_y{};
 HDC dc;
 POINT cursor;
 COLORREF color;
 
 void marcador(void);
 void callBack(void);
+void d_ATTACK(void);
 void ATTACK(void);
 void bot_pesca(void);
 
@@ -24,9 +24,7 @@ int main()
 
 	while (pos_cursor[0] == 0 && pos_cursor[1] == 0) {
 		GetCursorPos(&cursor);
-		pos_x_y[0] = cursor.x;
-		pos_x_y[1] = cursor.y;
-		marcador();
+		marcador(cursor.x, cursor.y);
 
 		std::cout << "COLOQUE O MOUSE OU O MARCADOR EM CIMA DO PEIXE DA PESCA E APERTE CTRL+SHIFT+O" << std::endl;
 		if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(0x4f)) {
@@ -42,9 +40,7 @@ int main()
 			pos_cursor[2] = cursor.x;
 			pos_cursor[3] = cursor.y;
 		}
-		pos_x_y[0] = cursor.x;
-		pos_x_y[1] = cursor.y;
-		marcador();
+		marcador(cursor.x, cursor.y);
 
 		std::system("cls");
 	}
@@ -53,20 +49,35 @@ int main()
 	return 0;
 }
 
-void marcador(void) {
-	SetPixel(dc, pos_x_y[0], pos_x_y[1], RGB(0, 0, 0));
-	SetPixel(dc, pos_x_y[0] + 1, pos_x_y[1], RGB(0, 0, 0));
-	SetPixel(dc, pos_x_y[0], pos_x_y[1] + 1, RGB(0, 0, 0));
-	SetPixel(dc, pos_x_y[0] + 1, pos_x_y[1] + 1, RGB(0, 0, 0));
-	SetPixel(dc, pos_x_y[0] - 1, pos_x_y[1], RGB(0, 0, 0));
-	SetPixel(dc, pos_x_y[0], pos_x_y[1] - 1, RGB(0, 0, 0));
-	SetPixel(dc, pos_x_y[0] - 1, pos_x_y[1] - 1, RGB(0, 0, 0));
-	SetPixel(dc, pos_x_y[0] + 2, pos_x_y[1], RGB(0, 0, 0));
-	SetPixel(dc, pos_x_y[0], pos_x_y[1] + 2, RGB(0, 0, 0));
-	SetPixel(dc, pos_x_y[0] + 2, pos_x_y[1] + 2, RGB(0, 0, 0));
-	SetPixel(dc, pos_x_y[0] - 2, pos_x_y[1], RGB(0, 0, 0));
-	SetPixel(dc, pos_x_y[0], pos_x_y[1] - 2, RGB(0, 0, 0));
-	SetPixel(dc, pos_x_y[0] - 2, pos_x_y[1] - 2, RGB(0, 0, 0));
+void marcador(int pox_x, int pos_y) {
+	SetPixel(dc, pox_x, pos_y, RGB(0, 0, 0));
+	SetPixel(dc, pox_x + 1,pos_y, RGB(0, 0, 0));
+	SetPixel(dc, pox_x, pos_y + 1, RGB(0, 0, 0));
+	SetPixel(dc, pox_x + 1, pos_y + 1, RGB(0, 0, 0));
+	SetPixel(dc, pox_x - 1, pos_y, RGB(0, 0, 0));
+	SetPixel(dc, pox_x, pos_y- 1, RGB(0, 0, 0));
+	SetPixel(dc, pox_x - 1, pos_y - 1, RGB(0, 0, 0));
+	SetPixel(dc,pox_x + 2, pos_y, RGB(0, 0, 0));
+	SetPixel(dc, pox_x, pos_y + 2, RGB(0, 0, 0));
+	SetPixel(dc, pox_x + 2, pos_y + 2, RGB(0, 0, 0));
+	SetPixel(dc, pox_x - 2, pos_y, RGB(0, 0, 0));
+	SetPixel(dc, pox_x, pos_y- 2, RGB(0, 0, 0));
+	SetPixel(dc,pox_x- 2, pos_y- 2, RGB(0, 0, 0));
+}
+
+void d_ATTACK(void){
+	keybd_event(VK_F1, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F2, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F3, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F4, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F5, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F6, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F7, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F8, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F9, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F10, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F11, NULL, KEYEVENTF_KEYUP, NULL);
+	keybd_event(VK_F12, NULL, KEYEVENTF_KEYUP, NULL);
 }
 
 void ATTACK(void) {
@@ -83,18 +94,7 @@ void ATTACK(void) {
 	keybd_event(VK_F11, NULL, NULL, NULL);
 	keybd_event(VK_F12, NULL, NULL, NULL);
 	Sleep(150);
-	keybd_event(VK_F1, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F2, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F3, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F4, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F5, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F6, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F7, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F8, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F9, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F10, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F11, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F12, NULL, KEYEVENTF_KEYUP, NULL);
+    d_ATTACK();
 }
 
 
