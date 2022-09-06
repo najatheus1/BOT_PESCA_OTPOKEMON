@@ -5,6 +5,7 @@
 std::array<HWND, 2> window{};
 std::array<int, 4> color_rgb{};
 std::array<LONG, 6> pos_cursor{};
+int count = {};
 HDC dc;
 POINT cursor;
 COLORREF color;
@@ -65,10 +66,8 @@ int main()
 }
 
 void pesca(void) {
-	Sleep(200);
+	count = 0;
 	SetCursorPos(pos_cursor[0], pos_cursor[1]);
-	mouse_event(0x0002, NULL, NULL, NULL, NULL);
-	mouse_event(0x0004, NULL, NULL, NULL, NULL);
 	Sleep(200);
 	mouse_event(0x0002, NULL, NULL, NULL, NULL);
 	mouse_event(0x0004, NULL, NULL, NULL, NULL);
@@ -76,12 +75,9 @@ void pesca(void) {
 	SetCursorPos(pos_cursor[2], pos_cursor[3]);
 	mouse_event(0x0002, NULL, NULL, NULL, NULL);
 	mouse_event(0x0004, NULL, NULL, NULL, NULL);
-	mouse_event(0x0002, NULL, NULL, NULL, NULL);
-	mouse_event(0x0004, NULL, NULL, NULL, NULL);
 	Sleep(200);
 	mouse_event(0x0002, NULL, NULL, NULL, NULL);
 	mouse_event(0x0004, NULL, NULL, NULL, NULL);
-	Sleep(200);
 }
 
 void marcador(int pox_x, int pos_y) {
@@ -128,7 +124,6 @@ void TARGET(void) {
 
 void ATTACK(void) {
 	TARGET();
-	Sleep(400);
 	keybd_event(VK_F1, NULL, NULL, NULL);
 	keybd_event(VK_F2, NULL, NULL, NULL);
 	keybd_event(VK_F3, NULL, NULL, NULL);
@@ -141,8 +136,6 @@ void ATTACK(void) {
 	keybd_event(VK_F10, NULL, NULL, NULL);
 	keybd_event(VK_F11, NULL, NULL, NULL);
 	keybd_event(VK_F12, NULL, NULL, NULL);
-	pesca();
-	//d_ATTACK();
 }
 
 void callBack(void) {
@@ -176,6 +169,11 @@ void bot_pesca(void) {
 					dc = GetDC(window[0]);
 				}
 
+				++count;
+				if (count >= 10000) {
+					pesca();
+				}
+
 				GetCursorPos(&cursor);
 				if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(0x4f)) {
 					std::cout << "COLOQUE O MOUSE OU O MARCADOR EM CIMA DO PEIXE DA PESCA" << std::endl;
@@ -198,11 +196,13 @@ void bot_pesca(void) {
 				color_rgb[2] = static_cast<int>GetBValue(color);
 				color_rgb[3] = RGB(color_rgb[0], color_rgb[1], color_rgb[2]);
 				if (color_rgb[3] >= 917341 && color_rgb[3] <= 3254083) {
-					pesca();
+					SetCursorPos(pos_cursor[0], pos_cursor[1]);
+					Sleep(200);
+					mouse_event(0x0002, NULL, NULL, NULL, NULL);
 					ATTACK();
+					pesca();
 					std::cout << "PEGOU UM POKEMON!!" << std::endl;
 				}
-				return;
 			}
 		}
 	}
