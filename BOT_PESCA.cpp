@@ -137,6 +137,8 @@ void ATTACK(void) {
 }
 
 void returnCallback(void) {
+	d_ATTACK();
+
 	while (true) {
 		if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(0x51)) {
 			callBack();
@@ -162,7 +164,6 @@ void callBack(void) {
 
 	for (;;) {
 		bot_pesca();
-		d_ATTACK();
 	}
 }
 
