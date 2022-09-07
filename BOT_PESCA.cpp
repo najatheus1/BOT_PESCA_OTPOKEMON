@@ -2,6 +2,8 @@
 #include <Windows.h>
 #include <array>
 
+#define NAME_TITLE "BOT_PESCA(OTPOKEMON) [BY: SRNAJA]"
+
 std::array<HWND, 2> window{};
 std::array<int, 4> color_rgb{};
 std::array<LONG, 6> pos_cursor{};
@@ -22,7 +24,15 @@ void bot_pesca(void);
 
 int main()
 {
-	SetConsoleTitle("BOT_PESCA(OTPOKEMON) [BY: SRNAJA]");
+	window[0] = FindWindow("otPokemon", NULL);
+	if (!window[0]) {
+		std::cout << "O OTPOKEMON ESTÁ FECHADO!" << std::endl;
+		return;
+	}
+
+	SetWindowText(window[0], NAME_TITLE);
+	SetConsoleTitle(NAME_TITLE);
+
 	for (std::size_t i = 0; i <= 5; ++i) {
 		pos_cursor[i] = 0;
 	}
@@ -153,13 +163,6 @@ void callBack(void) {
 
 	dc = 0;
 	color = 0;
-
-	window[0] = FindWindow("otPokemon", NULL);
-	if (!window[0]) {
-		std::cout << "O OTPOKEMON ESTÁ FECHADO!" << std::endl;
-		return;
-	}
-
 	dc = GetDC(window[0]);
 
 	for (;;) {
@@ -168,7 +171,7 @@ void callBack(void) {
 }
 
 void bot_pesca(void) {
-	window[0] = FindWindow("otPokemon", NULL);
+	window[0] = FindWindow(NAME_TITLE, NULL);
 	if (window[0]) {
 		window[1] = GetForegroundWindow();
 		if (window[1]) {
