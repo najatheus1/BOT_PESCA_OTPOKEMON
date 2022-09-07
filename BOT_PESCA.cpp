@@ -11,7 +11,7 @@ POINT cursor;
 COLORREF color;
 
 void marcador(int pox_x, int pos_y);
-void ClickCursor(void);
+void ClickCursor(int count_click);
 void pesca(void);
 void TARGET(void);
 void ATTACK(void);
@@ -67,8 +67,9 @@ int main()
 	return 0;
 }
 
-void ClickCursor(void) {
-	for (std::size_t i = 0; i <= 1; i++) {
+void ClickCursor(int count_click) {
+	for (std::size_t i = 1; i <= count_click; i++) {
+		Sleep(200);
 		mouse_event(0x0002, NULL, NULL, NULL, NULL);
 		mouse_event(0x0004, NULL, NULL, NULL, NULL);
 		Sleep(200);
@@ -83,14 +84,14 @@ void pesca(void) {
 		SetPhysicalCursorPos(pos_cursor[0], pos_cursor[1]);
 	}
 
-	ClickCursor();
+	ClickCursor(2);
 
 	while ((cursor.x != pos_cursor[2]) && (cursor.x != pos_cursor[3])) {
 		GetCursorPos(&cursor);
 		SetPhysicalCursorPos(pos_cursor[2], pos_cursor[3]);
 	}
 
-	ClickCursor();
+	ClickCursor(2);
 
 	ShowCursor(1);
 }
@@ -124,7 +125,7 @@ void TARGET(void) {
 		SetPhysicalCursorPos(pos_cursor[4], pos_cursor[5]);
 	}
 
-	ClickCursor();
+	ClickCursor(1);
 }
 
 void ATTACK(void) {
