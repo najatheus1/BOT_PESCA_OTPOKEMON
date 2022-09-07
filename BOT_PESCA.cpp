@@ -5,7 +5,7 @@
 std::array<HWND, 2> window{};
 std::array<int, 4> color_rgb{};
 std::array<LONG, 6> pos_cursor{};
-int count = {};
+std::array<int, 4 >count {};
 HDC dc;
 POINT cursor;
 COLORREF color;
@@ -66,18 +66,21 @@ int main()
 }
 
 void pesca(void) {
-	count = 0;
-	SetCursorPos(pos_cursor[0], pos_cursor[1]);
-	Sleep(200);
-	mouse_event(0x0002, NULL, NULL, NULL, NULL);
-	mouse_event(0x0004, NULL, NULL, NULL, NULL);
-	Sleep(200);
-	SetCursorPos(pos_cursor[2], pos_cursor[3]);
-	mouse_event(0x0002, NULL, NULL, NULL, NULL);
-	mouse_event(0x0004, NULL, NULL, NULL, NULL);
-	Sleep(200);
-	mouse_event(0x0002, NULL, NULL, NULL, NULL);
-	mouse_event(0x0004, NULL, NULL, NULL, NULL);
+	count[0] = 0;
+	for (std::size_t i = 0; i <= 1; ++i) {
+		SetPhysicalCursorPos(pos_cursor[0], pos_cursor[1]);
+		mouse_event(0x0002, NULL, NULL, NULL, NULL);
+		mouse_event(0x0004, NULL, NULL, NULL, NULL);
+		Sleep(200);
+	}
+	for (std::size_t i = 0; i <= 1; ++i) {
+		Sleep(200);
+		SetPhysicalCursorPos(pos_cursor[2], pos_cursor[3]);
+		mouse_event(0x0002, NULL, NULL, NULL, NULL);
+		mouse_event(0x0004, NULL, NULL, NULL, NULL);
+		Sleep(200);
+	}
+	ShowCursor(true);
 }
 
 void marcador(int pox_x, int pos_y) {
@@ -97,45 +100,25 @@ void marcador(int pox_x, int pos_y) {
 }
 
 void d_ATTACK(void) {
-	keybd_event(VK_F1, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F2, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F3, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F4, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F5, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F6, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F7, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F8, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F9, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F10, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F11, NULL, KEYEVENTF_KEYUP, NULL);
-	keybd_event(VK_F12, NULL, KEYEVENTF_KEYUP, NULL);
+	for (BYTE i = VK_F1; i <= VK_F12; i++) {
+		keybd_event(i, NULL, KEYEVENTF_KEYUP, NULL);
+	}
 }
 
 void TARGET(void) {
-	Sleep(400);
-	SetCursorPos(pos_cursor[4], pos_cursor[5]);
-	mouse_event(0x0002, NULL, NULL, NULL, NULL);
-	mouse_event(0x0004, NULL, NULL, NULL, NULL);
-	Sleep(400);
-	mouse_event(0x0002, NULL, NULL, NULL, NULL);
-	mouse_event(0x0004, NULL, NULL, NULL, NULL);
-	Sleep(400);
+	for (std::size_t i = 0; i <= 2; ++i) {
+		SetPhysicalCursorPos(pos_cursor[4], pos_cursor[5]);
+		mouse_event(0x0002, NULL, NULL, NULL, NULL);
+		mouse_event(0x0004, NULL, NULL, NULL, NULL);
+	}
 }
 
 void ATTACK(void) {
 	TARGET();
-	keybd_event(VK_F1, NULL, NULL, NULL);
-	keybd_event(VK_F2, NULL, NULL, NULL);
-	keybd_event(VK_F3, NULL, NULL, NULL);
-	keybd_event(VK_F4, NULL, NULL, NULL);
-	keybd_event(VK_F5, NULL, NULL, NULL);
-	keybd_event(VK_F6, NULL, NULL, NULL);
-	keybd_event(VK_F7, NULL, NULL, NULL);
-	keybd_event(VK_F8, NULL, NULL, NULL);
-	keybd_event(VK_F9, NULL, NULL, NULL);
-	keybd_event(VK_F10, NULL, NULL, NULL);
-	keybd_event(VK_F11, NULL, NULL, NULL);
-	keybd_event(VK_F12, NULL, NULL, NULL);
+	for (BYTE i = VK_F1; i <= VK_F12; i++) {
+		keybd_event(i, NULL, NULL, NULL);
+	}
+	Sleep(200);
 }
 
 void callBack(void) {
@@ -169,8 +152,8 @@ void bot_pesca(void) {
 					dc = GetDC(window[0]);
 				}
 
-				++count;
-				if (count >= 10000) {
+				++count[0];
+				if (count[0] >= 10000) {
 					pesca();
 				}
 
@@ -187,6 +170,12 @@ void bot_pesca(void) {
 					pos_cursor[3] = cursor.y;
 				}
 
+				if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(0x42)) {
+					std::cout << "COLOQUE O MOUSE EM CIMA DA JANELA DE ATAQUE" << std::endl;
+					pos_cursor[4] = cursor.x;
+					pos_cursor[5] = cursor.y;
+				}
+
 				color = GetPixel(dc, pos_cursor[0] + 1, pos_cursor[1] + 1);
 				marcador(pos_cursor[0], pos_cursor[1]);
 				marcador(pos_cursor[2], pos_cursor[3]);
@@ -196,9 +185,11 @@ void bot_pesca(void) {
 				color_rgb[2] = static_cast<int>GetBValue(color);
 				color_rgb[3] = RGB(color_rgb[0], color_rgb[1], color_rgb[2]);
 				if (color_rgb[3] >= 917341 && color_rgb[3] <= 3254083) {
-					SetCursorPos(pos_cursor[0], pos_cursor[1]);
+					ShowCursor(false);
+					SetPhysicalCursorPos(pos_cursor[0], pos_cursor[1]);
 					Sleep(200);
 					mouse_event(0x0002, NULL, NULL, NULL, NULL);
+					mouse_event(0x0004, NULL, NULL, NULL, NULL);
 					ATTACK();
 					pesca();
 					std::cout << "PEGOU UM POKEMON!!" << std::endl;
