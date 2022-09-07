@@ -33,7 +33,6 @@ int main()
 		return 0;
 	}
 
-	SetWindowText(window[0], NAME_TITLE);
 	SetConsoleTitle(NAME_TITLE);
 
 	for (std::size_t i = 0; i <= 5; ++i) {
@@ -153,7 +152,7 @@ void returnCallback(void) {
 	d_ATTACK();
 
 	while (true) {
-		if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(0x51)) {
+		if (GetAsyncKeyState(0x51)) {
 			callBack();
 		}
 	}
@@ -174,7 +173,7 @@ void callBack(void) {
 }
 
 void bot_pesca(void) {
-	window[0] = FindWindow(NAME_TITLE, NULL);
+	window[0] = FindWindow("otPokemon", NULL);
 	if (window[0]) {
 		window[1] = GetForegroundWindow();
 		if (window[1]) {
@@ -185,11 +184,11 @@ void bot_pesca(void) {
 				}
 
 				++count[0];
-				if (count[0] >= 10000) {
+				if (count[0] >= 17000) {
 					pesca();
 				}
 
-				if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(0x45)) {
+				if (GetAsyncKeyState(0x45)) {
 					returnCallback();
 				}
 
