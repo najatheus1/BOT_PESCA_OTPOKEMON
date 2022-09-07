@@ -25,9 +25,12 @@ void bot_pesca(void);
 int main()
 {
 	window[0] = FindWindow("otPokemon", NULL);
-	if (!window[0]) {
+	while (!window[0]) {
+		std::system("cls");
 		std::cout << "O OTPOKEMON ESTÁ FECHADO!" << std::endl;
-		return;
+		std::cout << "esperando..." << std::endl;
+		window[0] = FindWindow("otPokemon", NULL);
+		return 0;
 	}
 
 	SetWindowText(window[0], NAME_TITLE);
