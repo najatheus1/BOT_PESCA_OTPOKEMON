@@ -11,10 +11,12 @@ POINT cursor;
 COLORREF color;
 
 void marcador(int pox_x, int pos_y);
+void ClickCursor(void);
 void pesca(void);
 void TARGET(void);
 void ATTACK(void);
 void d_ATTACK(void);
+void returnCallback(void);
 void callBack(void);
 void bot_pesca(void);
 
@@ -65,22 +67,32 @@ int main()
 	return 0;
 }
 
+void ClickCursor(void) {
+	for (std::size_t i = 0; i <= 1; i++) {
+		mouse_event(0x0002, NULL, NULL, NULL, NULL);
+		mouse_event(0x0004, NULL, NULL, NULL, NULL);
+		Sleep(200);
+	}
+}
+
 void pesca(void) {
 	count[0] = 0;
-	for (std::size_t i = 0; i <= 1; ++i) {
+	GetCursorPos(&cursor);
+	while ((cursor.x != pos_cursor[0]) && (cursor.x != pos_cursor[1])) {
+		GetCursorPos(&cursor);
 		SetPhysicalCursorPos(pos_cursor[0], pos_cursor[1]);
-		mouse_event(0x0002, NULL, NULL, NULL, NULL);
-		mouse_event(0x0004, NULL, NULL, NULL, NULL);
-		Sleep(200);
 	}
-	for (std::size_t i = 0; i <= 1; ++i) {
-		Sleep(200);
+
+	ClickCursor();
+
+	while ((cursor.x != pos_cursor[2]) && (cursor.x != pos_cursor[3])) {
+		GetCursorPos(&cursor);
 		SetPhysicalCursorPos(pos_cursor[2], pos_cursor[3]);
-		mouse_event(0x0002, NULL, NULL, NULL, NULL);
-		mouse_event(0x0004, NULL, NULL, NULL, NULL);
-		Sleep(200);
 	}
-	ShowCursor(true);
+
+	ClickCursor();
+
+	ShowCursor(1);
 }
 
 void marcador(int pox_x, int pos_y) {
@@ -106,11 +118,13 @@ void d_ATTACK(void) {
 }
 
 void TARGET(void) {
-	for (std::size_t i = 0; i <= 2; ++i) {
+	GetCursorPos(&cursor);
+	while ((cursor.x != pos_cursor[4]) && (cursor.x != pos_cursor[5])) {
+		GetCursorPos(&cursor);
 		SetPhysicalCursorPos(pos_cursor[4], pos_cursor[5]);
-		mouse_event(0x0002, NULL, NULL, NULL, NULL);
-		mouse_event(0x0004, NULL, NULL, NULL, NULL);
 	}
+
+	ClickCursor();
 }
 
 void ATTACK(void) {
@@ -119,6 +133,14 @@ void ATTACK(void) {
 		keybd_event(i, NULL, NULL, NULL);
 	}
 	Sleep(200);
+}
+
+void returnCallback(void) {
+	while (true) {
+		if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(0x51)) {
+			callBack();
+		}
+	}
 }
 
 void callBack(void) {
@@ -148,6 +170,7 @@ void bot_pesca(void) {
 		window[1] = GetForegroundWindow();
 		if (window[1]) {
 			if (window[0] == window[1]) {
+				GetCursorPos(&cursor);
 				if (!dc) {
 					dc = GetDC(window[0]);
 				}
@@ -157,7 +180,10 @@ void bot_pesca(void) {
 					pesca();
 				}
 
-				GetCursorPos(&cursor);
+				if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(0x45)) {
+					returnCallback();
+				}
+
 				if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(0x4f)) {
 					std::cout << "COLOQUE O MOUSE OU O MARCADOR EM CIMA DO PEIXE DA PESCA" << std::endl;
 					pos_cursor[0] = cursor.x;
@@ -185,7 +211,7 @@ void bot_pesca(void) {
 				color_rgb[2] = static_cast<int>GetBValue(color);
 				color_rgb[3] = RGB(color_rgb[0], color_rgb[1], color_rgb[2]);
 				if (color_rgb[3] >= 917341 && color_rgb[3] <= 3254083) {
-					ShowCursor(false);
+					ShowCursor(0);
 					SetPhysicalCursorPos(pos_cursor[0], pos_cursor[1]);
 					Sleep(200);
 					mouse_event(0x0002, NULL, NULL, NULL, NULL);
