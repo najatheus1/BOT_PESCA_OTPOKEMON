@@ -84,7 +84,7 @@ void pesca(void) {
 		SetPhysicalCursorPos(pos_cursor[0], pos_cursor[1]);
 	}
 
-	ClickCursor(1);
+	ClickCursor(2);
 
 	while ((cursor.x != pos_cursor[2]) && (cursor.x != pos_cursor[3])) {
 		GetCursorPos(&cursor);
