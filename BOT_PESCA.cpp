@@ -162,6 +162,7 @@ void callBack(void) {
 
 	for (;;) {
 		bot_pesca();
+		d_ATTACK();
 	}
 }
 
