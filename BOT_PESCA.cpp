@@ -1,16 +1,19 @@
 #include <iostream>
 #include <Windows.h>
 #include <array>
+#include <string>
 
 #define NAME_TITLE "BOT_PESCA(OTPOKEMON) [BY: SRNAJA]"
-
 std::array<HWND, 2> window{};
 std::array<int, 4> color_rgb{};
 std::array<LONG, 6> pos_cursor{};
-std::array<int, 4 >count {};
+std::array<int, 4 >count{};
 HDC dc;
 POINT cursor;
 COLORREF color;
+RECT rect, r;
+std::string text;
+
 
 void marcador(int pox_x, int pos_y);
 void ClickCursor(int count_click);
@@ -21,6 +24,7 @@ void d_ATTACK(void);
 void returnCallback(void);
 void callBack(void);
 void bot_pesca(void);
+void square(void);
 
 int main()
 {
@@ -172,6 +176,55 @@ void callBack(void) {
 	}
 }
 
+void square(void) {
+	GetClientRect(window[0], &rect);
+	SetBkMode(dc, TRANSPARENT);
+	SetTextColor(dc, RGB((rand() % 255 + 1), (rand() % 255 + 1), (rand() % 255 + 1)));
+	DrawTextA(dc, "BOT DE PESCA [ BY : SR.NAJA ]", -1, &rect, DT_BOTTOM | DT_INTERNAL | DT_VCENTER | DT_NOCLIP | DT_CENTER);
+
+	//Cursor
+	r.bottom = (cursor.y + 2) + 4;
+	r.top = cursor.y - 30;
+	r.left = cursor.x - 20;
+	r.right = (cursor.x + 2) + 25;
+	DrawFocusRect(dc, &r);
+	r.top = r.top + 40;
+	text = "X:" + std::to_string(cursor.x) + "/" + "Y:" + std::to_string(cursor.y);
+	DrawTextA(dc, text.c_str(), -1, &r, DT_BOTTOM | DT_INTERNAL | DT_VCENTER | DT_NOCLIP | DT_CENTER);
+
+	//Y: pos_cursor[3] && X: pos_cursor[2]
+	r.bottom = (pos_cursor[3] + 2) + 4;
+	r.top = pos_cursor[3] - 30;
+	r.left = pos_cursor[2] - 20;
+	r.right = (pos_cursor[2] + 2) + 25;
+	DrawFocusRect(dc, &r);
+	r.top = r.top + 40;
+	text = "X:" + std::to_string(pos_cursor[0]) + "/" + "Y:" + std::to_string(pos_cursor[1]);
+	DrawTextA(dc, text.c_str(), -1, &r, DT_BOTTOM | DT_INTERNAL | DT_VCENTER | DT_NOCLIP | DT_CENTER);
+
+	//Y: pos_cursor[5] && X: pos_cursor[4]
+	r.bottom = (pos_cursor[5] + 2) + 4;
+	r.top = pos_cursor[5] - 30;
+	r.left = pos_cursor[4] - 20;
+	r.right = (pos_cursor[4] + 2) + 25;
+	DrawFocusRect(dc, &r);
+	r.top = r.top + 40;
+	text = "X:" + std::to_string(pos_cursor[0]) + "/" + "Y:" + std::to_string(pos_cursor[1]);
+	DrawTextA(dc, text.c_str(), -1, &r, DT_BOTTOM | DT_INTERNAL | DT_VCENTER | DT_NOCLIP | DT_CENTER);
+
+	//Y: pos_cursor[1] && X: pos_cursor[0]
+	r.bottom = (pos_cursor[1] + 2) + 4;
+	r.top = pos_cursor[1] - 30;
+	r.left = pos_cursor[0] - 20;
+	r.right = (pos_cursor[0] + 2) + 25;
+	DrawFocusRect(dc, &r);
+	r.top = r.top + 40;
+	text = "X:" + std::to_string(pos_cursor[0]) + "/" + "Y:" + std::to_string(pos_cursor[1]);
+	DrawTextA(dc, text.c_str(), -1, &r, DT_BOTTOM | DT_INTERNAL | DT_VCENTER | DT_NOCLIP | DT_CENTER);
+
+	DrawFocusRect(dc, &rect);
+}
+
 void bot_pesca(void) {
 	window[0] = FindWindow("otPokemon", NULL);
 	if (window[0]) {
@@ -209,6 +262,7 @@ void bot_pesca(void) {
 					pos_cursor[4] = cursor.x;
 					pos_cursor[5] = cursor.y;
 				}
+				square();
 
 				color = GetPixel(dc, pos_cursor[0] + 1, pos_cursor[1] + 1);
 				marcador(pos_cursor[0], pos_cursor[1]);
