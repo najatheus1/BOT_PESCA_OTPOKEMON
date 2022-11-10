@@ -245,6 +245,14 @@ void bot_pesca(void) {
 					returnCallback();
 				}
 
+				if (GetAsyncKeyState(0x50)) {
+					while (true) {
+						if (GetAsyncKeyState(0x42)) {
+							break;
+						}
+					}
+				}
+
 				if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(0x4f)) {
 					std::cout << "COLOQUE O MOUSE OU O MARCADOR EM CIMA DO PEIXE DA PESCA" << std::endl;
 					pos_cursor[0] = cursor.x;
